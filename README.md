@@ -24,7 +24,7 @@ The first illustration provides the model summary in which we can use specific c
 * The lower the AIC, BIC, HQIC across models the better
 * The higher the Log-likehood the better
 
--INSERT AR22 AR RESULTS PNG
+![Image1](ar22.png)
 
 In the ARMA(2,2) model, the AIC is 6802.439 and the Log Likelihood is -3382.219.
 in the SARIMAX(3,0,2) X (1,0,0,5) auto-arima model, the AIC is 7037.665 and the Log likelihood is -3498.833.
@@ -35,15 +35,15 @@ The element of seasonality may best explain the better fit chosen by the SARIMAX
 The below illustrates that it may be possible to get the best model by testing one by one quicker than an auto arima model by testing parameters individually.
 The illustrations shows the SARIMAX vs Auto-ARIMA model forecasts, which are near identical.
 
--INSERT ARVSARIMAX PNG
+![Image2](arvsarimax.png)  
 
 ## Conclusion
 The below illustration contains our forecasted data and values.
 
--INSERT UML PNG
--INSERT FORECAST PNG
--INSERT AUTOVPRED PNG
--INSERT DATA PNG
+![Image3](uml.png)
+![Image4](forecast.png)
+![Image5](autovpred.png)
+![Image6](data.png)
 
 The current price of bitcoin is 43,882.90 USD as of 3/24/2022 4:39 PM EST. The model predicts backing into prices from forecasted average log returns that on 4/22/2022 the price of bitcoin will be 44313.99 USD. Representing ~ 0.98% upside.
 
