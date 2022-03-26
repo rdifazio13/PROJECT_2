@@ -110,12 +110,12 @@ class MACDBacktester():
         # subtract transaction costs from return when trade takes place
         data.strategy = data.strategy - data.trades * self.tc
         
-        data["creturns"] = data["returns"].cumsum().apply(np.exp)
-        data["cstrategy"] = data["strategy"].cumsum().apply(np.exp)
+        data["Cumulative Returns Buy and Hold"] = data["returns"].cumsum().apply(np.exp)
+        data["Cumulative Returns MACD Strategy"] = data["strategy"].cumsum().apply(np.exp)
         self.results = data
         
-        perf = data["cstrategy"].iloc[-1] # absolute performance of the strategy
-        outperf = perf - data["creturns"].iloc[-1] # out-/underperformance of strategy
+        perf = data["Cumulative Returns MACD Strategy"].iloc[-1] # absolute performance of the strategy
+        outperf = perf - data["Cumulative Returns Buy and Hold"].iloc[-1] # out-/underperformance of strategy
         return round(perf, 6), round(outperf, 6)
     
     def plot_results(self):
@@ -126,7 +126,7 @@ class MACDBacktester():
             print("No results to plot yet. Run a strategy.")
         else:
             title = "{} | MACD ({}, {}, {}) | TC = {}".format(self.symbol, self.EMA_S, self.EMA_L, self.signal_mw, self.tc)
-            self.results[["creturns", "cstrategy"]].plot(title=title, figsize=(12, 8))
+            self.results[["Cumulative Returns Buy and Hold", "Cumulative Returns MACD Strategy"]].plot(title=title, figsize=(12, 8))
         
     def update_and_run(self, MACD):
         ''' Updates MACD parameters and returns the negative absolute performance (for minimization algorithm).
@@ -149,5 +149,3 @@ class MACDBacktester():
         '''
         opt = brute(self.update_and_run, (EMA_S_range, EMA_L_range, signal_mw_range), finish=None)
         return opt, -self.update_and_run(opt)
-    
-    
