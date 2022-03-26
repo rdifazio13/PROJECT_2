@@ -6,7 +6,6 @@ from alpaca_trade_api.rest import REST, TimeFrame
 import alpaca_trade_api as tradeapi
 plt.style.use("seaborn")
 
-
 class SMABacktester():
     ''' Class for the vectorized backtesting of SMA-based trading strategies.
 
@@ -64,7 +63,7 @@ class SMABacktester():
     def get_data(self):       
         ''' Retrieves and prepares the data.
         '''
-        raw = self.api.get_crypto_bars(self.symbol, TimeFrame.Day, self.start, self.end).df
+        raw = self.api.get_crypto_bars(self.symbol, TimeFrame.Day, self.start, self.end, exchanges=['CBSE']).df
         raw = raw.loc[:, 'close'].to_frame()
         raw["returns"] = np.log(raw['close']).diff()
         raw["SMA_S"] = raw['close'].rolling(50).mean()
@@ -88,13 +87,13 @@ class SMABacktester():
         data["position"] = np.where(data["SMA_S"] > data["SMA_L"], 1, -1)
         data["strategy"] = data["position"].shift(1) * data["returns"]
         data.dropna(inplace=True)
-        data["creturns"] = data["returns"].cumsum().apply(np.exp)
-        data["cstrategy"] = data["strategy"].cumsum().apply(np.exp)
+        data["Cumulative Returns Buy and Hold"] = data["returns"].cumsum().apply(np.exp)
+        data["Cumulative Returns SMA Strategy"] = data["strategy"].cumsum().apply(np.exp)
         self.results = data
         # absolute performance of the strategy
-        perf = data["cstrategy"].iloc[-1]
+        perf = data["Cumulative Returns SMA Strategy"].iloc[-1]
         # out-/underperformance of strategy
-        outperf = perf - data["creturns"].iloc[-1]
+        outperf = perf - data["Cumulative Returns Buy and Hold"].iloc[-1]
         return round(perf, 6), round(outperf, 6)
     
     def plot_results(self):
@@ -105,7 +104,7 @@ class SMABacktester():
             print("No results to plot yet. Run a strategy.")
         else:
             title = "{} | SMA_S = {} | SMA_L = {}".format(self.symbol, self.SMA_S, self.SMA_L)
-            self.results[["creturns", "cstrategy"]].plot(title=title, figsize=(12, 8))
+            self.results[["Cumulative Returns Buy and Hold", "Cumulative Returns SMA Strategy"]].plot(title=title, figsize=(12, 8))
         
     def update_and_run(self, SMA):
         ''' Updates SMA parameters and returns the negative absolute performance (for minimization algorithm).
