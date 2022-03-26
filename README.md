@@ -25,7 +25,7 @@ The first illustration provides the model summary in which we can use specific c
 * The higher the Log-likehood the better
 
 ![Image1](ar22.png)
-![Image7](AR Results.png)
+![Image7](https://github.com/rdifazio13/PROJECT_2/blob/main/AR%20Results.png)
 
 In the ARMA(2,2) model, the AIC is 6802.439 and the Log Likelihood is -3382.219.
 in the SARIMAX(3,0,2) X (1,0,0,5) auto-arima model, the AIC is 7037.665 and the Log likelihood is -3498.833.
